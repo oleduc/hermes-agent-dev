@@ -145,10 +145,15 @@ docker run --rm --network host --cap-add NET_RAW hermes-agent-dev \
 
 ## Building & publishing (CI)
 
-Images are built and pushed to GHCR by
-[`.github/workflows/publish.yml`](.github/workflows/publish.yml). The workflow
-triggers on **version tags** (`v*`) and publishes multi-tag images via
-`docker/build-push-action` with GitHub Actions layer caching.
+Images are built by
+[`.github/workflows/publish.yml`](.github/workflows/publish.yml) via
+`docker/build-push-action` with GitHub Actions layer caching:
+
+- **On pull requests** (opened / updated / reopened): the image is **built
+  only** to validate the `Dockerfile` — nothing is pushed and no registry
+  login happens.
+- **On version tags** (`v*`): the image is built **and pushed** to GHCR with
+  the multiple tags below.
 
 Cut a release:
 
