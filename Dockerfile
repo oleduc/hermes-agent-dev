@@ -122,8 +122,10 @@ ENV RUSTUP_HOME=/usr/local/rustup \
     PATH=/usr/local/cargo/bin:$PATH
 RUN curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs \
     | sh -s -- -y --no-modify-path --profile minimal \
-        --component clippy rustfmt \
-    # Fast incremental linker and a couple of ubiquitous cargo helpers.
+    # clippy + rustfmt for linting/formatting (added separately; rustup-init
+    # only accepts one value per --component flag).
+    && rustup component add clippy rustfmt \
+    # A couple of ubiquitous cargo helpers.
     && cargo install --locked cargo-watch cargo-edit \
     && chmod -R a+w /usr/local/rustup /usr/local/cargo
 

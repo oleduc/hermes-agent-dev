@@ -149,11 +149,11 @@ Images are built by
 [`.github/workflows/publish.yml`](.github/workflows/publish.yml) via
 `docker/build-push-action` with GitHub Actions layer caching:
 
-- **On pull requests** (opened / updated / reopened): the image is **built
+- **On pull requests** (opened / updated / reopened) the `build` job **builds
   only** to validate the `Dockerfile` — nothing is pushed and no registry
   login happens.
-- **On version tags** (`v*`): the image is built **and pushed** to GHCR with
-  the multiple tags below.
+- **On version tags** (`v*`) the `publish` job builds **and pushes** to GHCR
+  with the multiple tags below.
 
 Cut a release:
 
