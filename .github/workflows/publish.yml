@@ -4,13 +4,41 @@ on:
   push:
     tags:
       - 'v*'
+  pull_request:
+    types: [opened, synchronize, reopened]
 
 env:
   REGISTRY: ghcr.io
   IMAGE_NAME: ${{ github.repository }}
 
 jobs:
-  build-and-push:
+  # Pull requests: validate that the image still builds. Nothing is pushed.
+  build:
+    name: Build image (PR validation)
+    if: github.event_name == 'pull_request'
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+
+      - name: Build (no push)
+        uses: docker/build-push-action@v6
+        with:
+          context: .
+          push: false
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
+
+  # Version tags: build the image and publish it to GHCR.
+  publish:
+    name: Build and push image
+    if: github.event_name == 'push'
     runs-on: ubuntu-latest
     permissions:
       contents: read
