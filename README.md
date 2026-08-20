@@ -8,7 +8,7 @@ can build, test and ship software in **Python**, **Rust** and
 Linux (GUI) application development** — and can drive **Podman**, connect to
 **SSH** hosts, and emit **Wake-on-LAN** packets.
 
-- **Base image:** `docker.io/nousresearch/hermes-agent:latest` (Debian 13 "trixie")
+- **Base image:** `docker.io/nousresearch/hermes-agent:v2026.8.18` — Hermes Agent v0.20.4, Debian 13 "trixie" (pinned for reproducible builds)
 - **Published to:** GitHub Container Registry — `ghcr.io/oleduc/hermes-agent-dev`
 - **License:** MIT
 
@@ -22,7 +22,7 @@ Linux (GUI) application development** — and can drive **Podman**, connect to
 | --- | --- |
 | **Python** | `python3`, `pip`, `venv`, `python3-dev`, [`uv`](https://github.com/astral-sh/uv), `pipx`, [`poetry`](https://python-poetry.org/) |
 | **Rust** | `rustup` + stable toolchain (system-wide), `clippy`, `rustfmt`, `cargo-watch`, `cargo-edit` |
-| **JS/TS** | Node.js LTS, `npm`, `pnpm` & `yarn` (via corepack), `typescript`, `ts-node` |
+| **JS/TS** | Node.js 26 (matches the Hermes base requirement), `npm`, `pnpm` & `yarn` (via corepack), `typescript`, `ts-node` |
 
 ### Build & native toolchain
 

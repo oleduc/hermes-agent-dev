@@ -5,7 +5,11 @@
 # fullstack development in Python, Rust and JavaScript/TypeScript, covering
 # both web development and native Linux (GUI) application development, plus
 # tooling to drive Podman, connect to SSH hosts and emit Wake-on-LAN packets.
-FROM docker.io/nousresearch/hermes-agent:latest
+#
+# Base image pinned to a specific dated tag for reproducible builds; bump this
+# when picking up a newer Hermes release (see its changelog for migration
+# steps). v2026.8.18 == Hermes Agent v0.20.4.
+FROM docker.io/nousresearch/hermes-agent:v2026.8.18
 
 # Non-interactive apt for reproducible, unattended builds.
 ENV DEBIAN_FRONTEND=noninteractive \
@@ -101,10 +105,14 @@ RUN apt-get update \
     && rm -rf /var/lib/apt/lists/*
 
 # ---------------------------------------------------------------------------
-# Node.js (LTS) + JS/TS tooling
+# Node.js 26 + JS/TS tooling
 # ---------------------------------------------------------------------------
+# Hermes Agent v0.20.0 made Node 26 a hard requirement ("Node 26 required
+# across installers/heal/upgrade, managed Node/uv resolve before bare PATH").
+# Install Node 26 explicitly so the system `node` on PATH matches the base's
+# managed runtime instead of downgrading it to the distro LTS.
 ENV COREPACK_ENABLE_DOWNLOAD_PROMPT=0
-RUN curl -fsSL https://deb.nodesource.com/setup_lts.x | bash - \
+RUN curl -fsSL https://deb.nodesource.com/setup_26.x | bash - \
     && apt-get install -y --no-install-recommends nodejs \
     && apt-get clean \
     && rm -rf /var/lib/apt/lists/* \
