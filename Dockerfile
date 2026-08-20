@@ -116,7 +116,10 @@ RUN curl -fsSL https://deb.nodesource.com/setup_26.x | bash - \
     && apt-get install -y --no-install-recommends nodejs \
     && apt-get clean \
     && rm -rf /var/lib/apt/lists/* \
-    # corepack manages pnpm/yarn; also install a global TypeScript toolchain.
+    # Node 26 no longer bundles Corepack, so install it explicitly (npm still
+    # ships with Node). Corepack then manages pnpm/yarn; also install a global
+    # TypeScript toolchain.
+    && npm install -g corepack@latest \
     && corepack enable \
     && corepack prepare pnpm@latest --activate \
     && corepack prepare yarn@stable --activate \
