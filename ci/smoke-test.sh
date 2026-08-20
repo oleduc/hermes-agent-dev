@@ -46,8 +46,12 @@ docker run --rm --entrypoint bash "${IMAGE}" -c '
   cargo clippy --version
 
   echo "== container / ops tooling =="
-  podman --version
-  buildah --version
+  # podman/buildah share containers/storage. Run as root inside a plain CI
+  # container there is no XDG runtime dir to derive a runroot from, so point
+  # them at throwaway dirs with the vfs driver (no /dev/fuse needed). This is
+  # a binary liveness check; real usage is rootless (see the README).
+  podman  --root /tmp/pstore --runroot /tmp/prun --storage-driver vfs version
+  buildah --root /tmp/pstore --runroot /tmp/prun --storage-driver vfs version
   skopeo --version
 
   echo ":: all smoke checks passed"
