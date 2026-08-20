@@ -149,11 +149,15 @@ Images are built by
 [`.github/workflows/publish.yml`](.github/workflows/publish.yml) via
 `docker/build-push-action` with GitHub Actions layer caching:
 
-- **On pull requests** (opened / updated / reopened) the `build` job **builds
-  only** to validate the `Dockerfile` — nothing is pushed and no registry
-  login happens.
-- **On version tags** (`v*`) the `publish` job builds **and pushes** to GHCR
-  with the multiple tags below.
+- **On pull requests** (opened / updated / reopened) the `build` job builds
+  the image, loads it, and runs a **runtime smoke test**
+  ([`ci/smoke-test.sh`](ci/smoke-test.sh)) that invokes the base `hermes` CLI
+  and the key toolchains (Node 26, cargo/clippy, uv, poetry, pnpm/yarn,
+  podman) to prove the image actually *runs* — not just that it builds.
+  Nothing is pushed and no registry login happens.
+- **On version tags** (`v*`) the `publish` job builds, runs the same smoke
+  test, and only then **pushes** the validated image to GHCR with the multiple
+  tags below.
 
 Cut a release:
 
