@@ -2,8 +2,6 @@ name: Build and Publish
 
 on:
   push:
-    branches:
-      - main
     tags:
       - 'v*'
   pull_request:
@@ -45,8 +43,8 @@ jobs:
       - name: Smoke test (hermes CLI + toolchains)
         run: ci/smoke-test.sh "${{ env.CI_IMAGE }}"
 
-  # Main and version tags: build, smoke-test, then publish to GHCR. Only the
-  # image that passed the smoke test is pushed.
+  # Version tags: build, smoke-test, then publish to GHCR. Only the image that
+  # passed the smoke test is pushed.
   publish:
     name: Build and push image
     if: github.event_name == 'push'

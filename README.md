@@ -154,11 +154,10 @@ Images are built by
   ([`ci/smoke-test.sh`](ci/smoke-test.sh)) that invokes the base `hermes` CLI
   inside the image to prove it actually *runs* on top of our layers — not just
   that it builds. Nothing is pushed and no registry login happens.
-- **On pushes to `main`** (including merged pull requests) the `publish` job
-  builds, runs the same smoke test, and only then pushes the validated image
-  to GHCR as `latest`.
-- **On version tags** (`v*`) the same job publishes the semantic version tags
-  below, along with `latest`.
+- **On version tags** (`v*`) the `publish` job builds, runs the same smoke
+  test, and only then publishes the semantic version tags below and updates
+  `latest` to the same validated image. Merges to `main` do not publish an
+  image.
 
 Cut a release:
 
@@ -169,9 +168,8 @@ git push origin v1.0.0
 
 This produces the following tags on `ghcr.io/oleduc/hermes-agent-dev`:
 
-| Git ref | Image tags |
+| Git tag | Image tags |
 | --- | --- |
-| `main` | `latest` |
 | `v1.2.3` | `1.2.3`, `1.2`, `1`, `latest` |
 
 The workflow authenticates with the built-in `GITHUB_TOKEN` (needs
@@ -189,7 +187,7 @@ are required.
 ├── LICENSE                     # MIT
 └── .github/
     └── workflows/
-        └── publish.yml         # PR validation and GHCR publication
+        └── publish.yml         # Tag-triggered build & push to GHCR
 ```
 
 ## Extending the image
