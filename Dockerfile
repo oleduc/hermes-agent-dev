@@ -8,8 +8,8 @@
 #
 # Base image pinned to a specific dated tag for reproducible builds; bump this
 # when picking up a newer Hermes release (see its changelog for migration
-# steps). v2026.8.18 == Hermes Agent v0.20.4.
-FROM docker.io/nousresearch/hermes-agent:v2026.8.18
+# steps). v2026.9.11 == Hermes Agent v0.21.2.
+FROM docker.io/nousresearch/hermes-agent:v2026.9.11
 
 # Non-interactive apt for reproducible, unattended builds.
 ENV DEBIAN_FRONTEND=noninteractive \
