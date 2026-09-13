@@ -8,7 +8,7 @@ can build, test and ship software in **Python**, **Rust** and
 Linux (GUI) application development** — and can drive **Podman**, connect to
 **SSH** hosts, and emit **Wake-on-LAN** packets.
 
-- **Base image:** `docker.io/nousresearch/hermes-agent:v2026.8.18` — Hermes Agent v0.20.4, Debian 13 "trixie" (pinned for reproducible builds)
+- **Base image:** `docker.io/nousresearch/hermes-agent:v2026.9.11` — Hermes Agent v0.21.2, Debian 13 "trixie" (pinned for reproducible builds)
 - **Published to:** GitHub Container Registry — `ghcr.io/oleduc/hermes-agent-dev`
 - **License:** MIT
 
@@ -155,8 +155,9 @@ Images are built by
   inside the image to prove it actually *runs* on top of our layers — not just
   that it builds. Nothing is pushed and no registry login happens.
 - **On version tags** (`v*`) the `publish` job builds, runs the same smoke
-  test, and only then **pushes** the validated image to GHCR with the multiple
-  tags below.
+  test, and only then publishes the semantic version tags below and updates
+  `latest` to the same validated image. Merges to `main` do not publish an
+  image.
 
 Cut a release:
 
